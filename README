@@ -1,0 +1,49 @@
+This project is a Python program that implements a solver for the Guess
+program of the "SFC Puzzles Collection" on Ubuntu Linux.  This is essentially
+the same game as the commercial "Mastermind" game of the 1970s.
+
+This solution was inspired/guided by the paper "Computer as Master Mind"
+by Donald E Knuth (J. Recreational Mathematics, Vol. 9(1), 1976-77.)
+
+The GitHub project is master-mind, but I name the program itself "guesser"
+because I use it with the "guess" program.
+                  
+The program is pure Python 3, using only the Python builtin modules
+argparser and random.
+
+You can see the command-line options by running the program as 
+    guesser.py -h
+You can have it give numeric guesses, as in the Knuth paper, or initials
+or full color names.  You can even make up names.
+
+Example run:
+
+  $ ./guesser.py
+  Master Mind
+  Invoke "./guesser.py -h" for help
+
+  Guess 1122 result: 01
+  Guess 2344 result: 10
+  Guess 3315 result: 01
+  Guess 2566 result: 02
+  Guess 6641 result: 40
+    SUCCESS: all black
+
+  Guess 1122 result:
+
+Example with random choice among possible guesses, and using initials
+of color from "guess" (initials are rygbtp corresponding to 123456):
+
+  ./guesser.py -rg
+  Master Mind
+  Invoke "./guesser.py -h" for help
+
+  Guess byby result: 00
+  Guess rpgr result: 03
+  Guess tgrp result: 22
+  Guess gtrp result: 13
+  Guess pgrt result: 40
+  SUCCESS: all black
+
+  Guess bbpp result:
+
