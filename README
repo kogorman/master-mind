@@ -9,7 +9,7 @@ The GitHub project is master-mind, but I name the program itself "guesser"
 because I use it with the "guess" program.
                   
 The program is pure Python 3, using only the Python builtin modules
-argparser and random.
+argparser, sys and random.
 
 You can see the command-line options by running the program as 
     guesser.py -h
