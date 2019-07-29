@@ -1,0 +1,27 @@
+                                   On Figure 1
+
+The Knuth paper included in the Knuth paper "Computer as Master Mind" has been
+transformed here into a spreadsheet.  I therefore submit the following
+"translation" of part of the discussion in the original paper.
+
+The CSV format is software-agnostic and does not include any formatting
+information.  You may want to adjust a few things depeinding on the software
+you are using.  You may find it convenient to resize column B to be
+similar to the other columns, some software makes it very wide to accomodate
+the text in cell B1.  You may also want to align everything to the right,
+and add one leading zero to the contents of each of the cells A4-A18 and
+A23-A27 to make each of these two digits, as that is the input required
+for the guesser program.
+
+Translation follows:
+
+  Let's consider a more typcial play of the game using the strategy of spread-
+sheet Figure1.csv.  If the answer to the first test pattern 1122 is "10" (one
+black hit) the original 1296 possibilities have been reduced to 256, and we go
+to the situation captioned "F" (see cells A12 and B12); this is the situation
+in column J rows 21 through 40.  The second test pattern (cf. cell J22) is
+1344, and let's say the answer is "01" (one white hit).  There are 44
+possibilities remaining, and our third guess is 3526.  If the result this time
+is "12" (one black hit, two white hits), the spreadsheet says that seven
+possibilities survive, and the test pattern 1462 will distinguish them. ...
+
