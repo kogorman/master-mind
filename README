@@ -4,6 +4,7 @@ the same game as the commercial "Mastermind" game of the 1970s.
 
 This solution was inspired/guided by the paper "Computer as Master Mind"
 by Donald E Knuth (J. Recreational Mathematics, Vol. 9(1), 1976-77.)
+A PDF of this paper is included here.
 
 The GitHub project is master-mind, but I name the program itself "guesser"
 because I use it with the "guess" program.
