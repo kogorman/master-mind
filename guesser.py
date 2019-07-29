@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Based on Knuth's "The Computer as Master Mind", J Recreational Mathematics Vol 9(1) 1976-77
 # License: Creative Commons By 4.0 (https://creativecommons.org/licenses/by/4.0/)
-# Last Modified: Fri Jul 26 17:47:24 PDT 2019
+# Last Modified: Mon Jul 29 09:23:31 PDT 2019
 
 import argparse
 import sys
@@ -169,10 +169,11 @@ if __name__ == '__main__':
             http://www.cs.uni.edu/~wallingf/teaching/cs3530/resources/knuth-mastermind.pdf
             accessed July 2019.'''.format(guess_version),
             epilog='''The program acts as codebreaker; you must create the hidden code and provide results
-            for the programs's guesses.  You present each result as two digits, representing black hits
+            for the program's guesses.  You present each result as two digits, representing black hits
             and while hits.  Each digit must be in the range 0-4.  Each round ends when either no candidates
             remain, or your result is "40".
-            The program will proceed to crack the next code, ad infinitum or until interrupted.''')
+            The program will proceed to crack the next code, ad infinitum or until you
+            enter "end" or any of several similar words.''')
     parser.add_argument('--random', '-r', action='store_true',
             help='''Randomize guesses among all of those producing the minimum-sized candidate set, whether
             the guess is a candidate or not.  This should still solve the game, but the guarantee of a win
@@ -220,7 +221,8 @@ if __name__ == '__main__':
         print(f"This is Master Mind, version {guess_version}.")
         exit(0)
     print("Master Mind")
-    print(f'Invoke "{sys.argv[0]} -h" for help')
+    if len(sys.argv)==1:
+        print(f'Invoke "{sys.argv[0]} -h" for options and other help')
     print()
 
     allcodes = set()
@@ -231,132 +233,139 @@ if __name__ == '__main__':
                 for d in colors:
                     code = a+b+c+d
                     allcodes |= {code}
-    while True:
-        s = set()
-        s |= allcodes
+    try:
+        while True:
+            s = set()
+            s |= allcodes
 
-        suffix=''
-        if args.random:
-            how, bad = guessWhat(allcodes, s)
-            guess = random.choice(list(bad))
-        else:
-            guess="1122"
-
-        count = len(s)
-        while len(s) > 0:
-            if len(s) <= args.choices:
-                print("Remaining candidates:",end="")
-                remaining = list(s)
-                remaining.sort()
-                for i in remaining:
-                    print(f" {i}",end="")
-                print()
-            if count <= 0:
-                print("Impossible.  Quitting.")
-                exit(1)
-            r=""
-            while r == "":
-                if args.letters is not None:
-                    guesslen = 4
-                    guessstr = ''
-                    for p in range(4):
-                        guessstr += args.letters[int(guess[p])-1]
-                elif args.words is not None:
-                    guesslen = maxlen * 4 + 3
-                    guesses = []
-                    for p in range(4):
-                        guesses += [args.words[int(guess[p])-1]]
-                    guessstr = " ".join(guesses)
-                else:
-                    raise Exception("Never happen")
-                if args.show_x:
-                    guesslen += len(xspace) + 1
-                    if suffix != '':
-                        added = xspace + suffix
-                        guessstr += added
-                if args.show_count:
-                    guessstr = f'{len(s):4d}({guessstr})'
-                    guesslen += 6
-                print(f"Guess {guessstr:>{guesslen}s} result: ",end='')
-                r = input()
-                if len(r) != 2:
-                    print("Must be 2 digits")
-                    r = ""
-                    continue
-                elif r[0] not in {"0","1","2","3","4"}:
-                    print(r[0],"is invalid")
-                    r = ""
-                    continue
-                elif r[1] not in {"0","1","2","3","4"}:
-                    print(r[1],"is invalid")
-                    r = ""
-                    continue
-                elif r[0] == "3" and r[1] == "1":
-                    print(r,"is impossible")
-                    r = ""
-                    continue
-                x = int(r[0])
-                y = int(r[1])
-                if x + y > 4:
-                    print("there are not",x+y,"columns")
-                    r = ""
-                    continue
-                r = [x,y]
-            if x == 4:
-                print(" SUCCESS: all black")
-                print()
-                break
-            elif len(s) < 2:
-                print(" *** ERROR: that had to be the right one!!!")
-                break
-
-            news = set()
-            for c in s:
-                # Pick candidates
-                exact, other = match(c, guess)
-                if exact == x and other == y:
-                    news |= {c}
-            if len(news) == 0:
-                print(" *** ERROR: No candidates left; I quit!")
-                break
-            elif len(news) == 1:
-                for i in news:
-                    guess = i
-                    break
-                #print(" ALMOST THERE: answer must be",guess)
-            elif len(news) == 2:
-                for i in news:
-                    guess = i
-                    break
-            s = news
-
-            if len(s) == 0:
-                break
-            else:
-                #if len(s) < 3:
-                #    print("Choose one of these; one of the is the answer.")
-                #    for i in s:
-                #        print("    ",i)
-                #    break
-
+            suffix=''
+            if args.random:
                 how, bad = guessWhat(allcodes, s)
-                if args.random:
-                    guess = random.choice(list(bad))
-                    if guess not in s:
-                        suffix = "X"
-                    else:
-                        suffix = ""
-                else:
-                    if len(bad & s) > 0:
-                        ingroup = bad & s
-                        suffix = ""
-                    else:
-                        ingroup = bad
-                        suffix = "x"
-                    guess = min(ingroup)
+                guess = random.choice(list(bad))
+            else:
+                guess="1122"
 
-                #while len(guess) != 4:
-                #    print("Enter the next guess: ",end="")
-                #    guess = input()
-                #    if len(guess) != 4:
-                #        print(" *** need exactly 4 digits")
+            count = len(s)
+            while len(s) > 0:
+                if len(s) <= args.choices:
+                    print("Remaining candidates:",end="")
+                    remaining = list(s)
+                    remaining.sort()
+                    for i in remaining:
+                        print(f" {i}",end="")
+                    print()
+                if count <= 0:
+                    print("Impossible.  Quitting.")
+                    exit(1)
+                r=""
+                while r == "":
+                    if args.letters is not None:
+                        guesslen = 4
+                        guessstr = ''
+                        for p in range(4):
+                            guessstr += args.letters[int(guess[p])-1]
+                    elif args.words is not None:
+                        guesslen = maxlen * 4 + 3
+                        guesses = []
+                        for p in range(4):
+                            guesses += [args.words[int(guess[p])-1]]
+                        guessstr = " ".join(guesses)
+                    else:
+                        raise Exception("Never happen")
+                    if args.show_x:
+                        guesslen += len(xspace) + 1
+                        if suffix != '':
+                            added = xspace + suffix
+                            guessstr += added
+                    if args.show_count:
+                        guessstr = f'{len(s):4d}({guessstr})'
+                        guesslen += 6
+                    print(f"Guess {guessstr:>{guesslen}s} result: ",end='')
+                    r = input()
+                    if r.lower() in ["end","bye","quit","exit","done"]:
+                        raise KeyboardInterrupt
+                    if len(r) != 2:
+                        print("Must be 2 digits")
+                        r = ""
+                        continue
+                    elif r[0] not in {"0","1","2","3","4"}:
+                        print(r[0],"is invalid")
+                        r = ""
+                        continue
+                    elif r[1] not in {"0","1","2","3","4"}:
+                        print(r[1],"is invalid")
+                        r = ""
+                        continue
+                    elif r[0] == "3" and r[1] == "1":
+                        print(r,"is impossible")
+                        r = ""
+                        continue
+                    x = int(r[0])
+                    y = int(r[1])
+                    if x + y > 4:
+                        print("there are not",x+y,"columns")
+                        r = ""
+                        continue
+                    r = [x,y]
+                if x == 4:
+                    print(" SUCCESS: all black")
+                    print()
+                    break
+                elif len(s) < 2:
+                    print(" *** ERROR: that had to be the right one!!!")
+                    break
+
+                news = set()
+                for c in s:
+                    # Pick candidates
+                    exact, other = match(c, guess)
+                    if exact == x and other == y:
+                        news |= {c}
+                if len(news) == 0:
+                    print(" *** ERROR: No candidates left; I quit!")
+                    break
+                elif len(news) == 1:
+                    for i in news:
+                        guess = i
+                        break
+                    #print(" ALMOST THERE: answer must be",guess)
+                elif len(news) == 2:
+                    for i in news:
+                        guess = i
+                        break
+                s = news
+
+                if len(s) == 0:
+                    break
+                else:
+                    #if len(s) < 3:
+                    #    print("Choose one of these; one of the is the answer.")
+                    #    for i in s:
+                    #        print("    ",i)
+                    #    break
+
+                    how, bad = guessWhat(allcodes, s)
+                    if args.random:
+                        guess = random.choice(list(bad))
+                        if guess not in s:
+                            suffix = "X"
+                        else:
+                            suffix = ""
+                    else:
+                        if len(bad & s) > 0:
+                            ingroup = bad & s
+                            suffix = ""
+                        else:
+                            ingroup = bad
+                            suffix = "x"
+                        guess = min(ingroup)
+
+                    #while len(guess) != 4:
+                    #    print("Enter the next guess: ",end="")
+                    #    guess = input()
+                    #    if len(guess) != 4:
+                    #        print(" *** need exactly 4 digits")
+    except KeyboardInterrupt:
+        print()
+        print()
+        print("Goodbye and thanks for playing!")
