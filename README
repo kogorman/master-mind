@@ -18,32 +18,54 @@ or full color names.  You can even make up names.
 
 Example run:
 
-  $ ./guesser.py
-  Master Mind
-  Invoke "./guesser.py -h" for help
+$ ./guesser.py
+Master Mind
+Invoke "./guesser.py -h" for options and other help
 
-  Guess 1122 result: 01
-  Guess 2344 result: 10
-  Guess 3315 result: 01
-  Guess 2566 result: 02
-  Guess 6641 result: 40
-    SUCCESS: all black
+Guess 1122 result: 01
+Guess 2344 result: 10
+Guess 3315 result: 01
+Guess 2566 result: 02
+Guess 6641 result: 40
+ SUCCESS: all black
 
-  Guess 1122 result:
+Guess 1122 result: end
+
+
+Goodbye and thanks for playing!
+$
 
 Example with random choice among possible guesses, and using initials
 of color from "guess" (initials are rygbtp corresponding to 123456):
 
   ./guesser.py -rg
   Master Mind
-  Invoke "./guesser.py -h" for help
 
   Guess byby result: 00
   Guess rpgr result: 03
   Guess tgrp result: 22
   Guess gtrp result: 13
   Guess pgrt result: 40
+   SUCCESS: all black
+
+  Guess 1122 result: exit
+
+
+  Goodbye and thanks for playing!
+
+Example with randomized guesses, counts, extension flag and short color names,
+
+  $ ./guesser.py -rcx -wRed,Yel,Grn,Blu,Tan,Pur
+  Master Mind
+
+  Guess   1296(Pur Yel Yel Pur) result: 01
+  Guess    256(Yel Red Red Grn) result: 12
+  Guess     21(Grn Red Tan Yel) result: 22
+  Guess      2(Tan Red Grn Yel) result: 13
+  Guess      1(Grn Tan Red Yel) result: 40
   SUCCESS: all black
 
-  Guess bbpp result:
+  Guess   1296(Blu Pur Blu Pur) result: quit
 
+
+  Goodbye and thanks for playing!
