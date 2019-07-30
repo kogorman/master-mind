@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Based on Knuth's "The Computer as Master Mind", J Recreational Mathematics Vol 9(1) 1976-77
 # License: Creative Commons By 4.0 (https://creativecommons.org/licenses/by/4.0/)
-# Last Modified: Mon Jul 29 19:38:13 PDT 2019
+# Last Modified: Mon Jul 29 19:39:54 PDT 2019
 
 import argparse
 import sys
@@ -241,7 +241,7 @@ if __name__ == '__main__':
             s |= allcodes
 
             suffix=''
-            if args.random:
+            if args.relax:
                 how, bad = guessWhat(allcodes, s)
                 guess = random.choice(list(bad))
             else:
@@ -347,7 +347,7 @@ if __name__ == '__main__':
                     #    break
 
                     how, bad = guessWhat(allcodes, s)
-                    if args.random:
+                    if args.relax:
                         guess = random.choice(list(bad))
                         if guess not in s:
                             suffix = "X"
