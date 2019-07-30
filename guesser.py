@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Based on Knuth's "The Computer as Master Mind", J Recreational Mathematics Vol 9(1) 1976-77
 # License: Creative Commons By 4.0 (https://creativecommons.org/licenses/by/4.0/)
-# Last Modified: Mon Jul 29 09:23:31 PDT 2019
+# Last Modified: Mon Jul 29 19:38:13 PDT 2019
 
 import argparse
 import sys
@@ -174,10 +174,12 @@ if __name__ == '__main__':
             remain, or your result is "40".
             The program will proceed to crack the next code, ad infinitum or until you
             enter "end" or any of several similar words.''')
-    parser.add_argument('--random', '-r', action='store_true',
-            help='''Randomize guesses among all of those producing the minimum-sized candidate set, whether
-            the guess is a candidate or not.  This should still solve the game, but the guarantee of a win
-            in 5 has not been proven, as far as I know.''')
+    parser.add_argument('--relax', '-r', action='store_true',
+            help='''Relax Knuth's rule of choosing the guess with the lowest number. and a possible
+            answer if one is available.  Instead, any guess that matches the best reduction is the
+            search space is eligible, and if there is more than one, a random choice is made.
+            This should still solve the game, but the guarantee of a win in 5 has not been proven,
+            as far as I know, but I have not seen any counterexamples either.''')
     parser.add_argument('--show-count', '-c',action='store_true',
             help='''Show the number of codes which remain possible answers.''')
     parser.add_argument('--show-x', '--show-extension','-x',action='store_true',
@@ -366,6 +368,9 @@ if __name__ == '__main__':
                     #    if len(guess) != 4:
                     #        print(" *** need exactly 4 digits")
     except KeyboardInterrupt:
-        print()
-        print()
-        print("Goodbye and thanks for playing!")
+        print("Interrupt")
+    except EOFError:
+        print("EOF reached")
+    print()
+    print()
+    print("Goodbye and thanks for playing!")
