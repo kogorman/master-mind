@@ -1,6 +1,8 @@
 This project is a Python program that implements a solver for the Guess
 program of the "SFC Puzzles Collection" on Ubuntu Linux.  This is essentially
-the same game as the commercial "Mastermind" game of the 1970s.
+the same game as the commercial "Mastermind" game of the 1970s.  The 
+collection itself can be run on Linux (of course), Windows, Mac and
+most phones.  Its web page is https://www.chiark.greenend.org.uk/~sgtatham/puzzles
 
 This solution was inspired/guided by the paper "Computer as Master Mind"
 by Donald E Knuth (J. Recreational Mathematics, Vol. 9(1), 1976-77.)
